@@ -31,3 +31,20 @@ yarn-error.log*
 # Misc
 *.bak
 *.tmp
+
+# Tauri
+src-tauri/target/
+
+# Capacitor / Android
+android/.gradle/
+android/app/build/
+android/build/
+android/.idea/
+android/local.properties
+android/*.iml
+android/app/*.iml
+
+# iOS (future)
+ios/App/Pods/
+ios/App/build/
+ios/DerivedData/
