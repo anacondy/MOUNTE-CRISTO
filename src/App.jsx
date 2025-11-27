@@ -283,12 +283,12 @@ const CustomAudioPlayer = ({ url }) => {
       let barHeight;
       let x = 0;
       
+      // Pre-calculate RGB base for performance
+      const baseRgb = '212, 77, 56';
+      
       for (let i = 0; i < bufferLength; i++) {
         barHeight = dataArray[i] / 2;
-        const red = 212; 
-        const green = 77;
-        const blue = 56;
-        ctx.fillStyle = `rgba(${red}, ${green}, ${blue}, ${barHeight / 100})`;
+        ctx.fillStyle = `rgba(${baseRgb}, ${barHeight / 100})`;
         ctx.beginPath();
         ctx.roundRect(x, canvas.height - barHeight, barWidth, barHeight, 2);
         ctx.fill();
@@ -644,14 +644,17 @@ const FileViewer = ({ file, onClose, onNext, onPrev }) => {
     if (isJsx && codeContent) {
       const cleanCode = codeContent.replace(/export\s+default\s+/g, '');
       
+      // Note: These CDN scripts are loaded in a sandboxed iframe for JSX execution.
+      // The sandbox attribute restricts the iframe's capabilities.
+      // Using specific versions (react@18.2.0, react-dom@18.2.0) for consistency.
       const jsxRunner = `
         <!DOCTYPE html>
         <html>
         <head>
           <meta charset="UTF-8" />
-          <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-          <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-          <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+          <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+          <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+          <script src="https://unpkg.com/@babel/standalone@7.23.0/babel.min.js"></script>
           <style>body { margin: 0; font-family: sans-serif; color: #eaddcf; background: #0d0907; overflow: hidden; } </style>
         </head>
         <body>
