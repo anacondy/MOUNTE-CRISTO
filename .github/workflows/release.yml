@@ -141,17 +141,19 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync android
 
-      - name: Build Android APK (Debug)
+      - name: Build Android APK (Release - unsigned)
         working-directory: android
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleRelease
 
       - name: Upload Android artifacts
         uses: actions/upload-artifact@v4
         with:
           name: android-artifacts
-          path: android/app/build/outputs/apk/debug/*.apk
+          path: android/app/build/outputs/apk/release/*.apk
 
   release:
+    # Run release even if some builds fail - upload whatever succeeded
+    if: always()
     needs: [build-desktop-linux, build-desktop-windows, build-desktop-macos, build-android]
     runs-on: ubuntu-latest
     steps:
@@ -159,11 +161,24 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: artifacts
+        continue-on-error: true
 
       - name: Display structure of downloaded files
-        run: find artifacts -type f
+        run: |
+          echo "Available artifacts:"
+          find artifacts -type f 2>/dev/null || echo "No artifacts found"
+
+      - name: Check if any artifacts exist
+        id: check_artifacts
+        run: |
+          if find artifacts -type f 2>/dev/null | grep -q .; then
+            echo "has_artifacts=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_artifacts=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Create Release
+        if: steps.check_artifacts.outputs.has_artifacts == 'true'
         uses: softprops/action-gh-release@v2
         with:
           files: |
@@ -174,5 +189,6 @@ jobs:
           generate_release_notes: true
           draft: false
           prerelease: false
+          fail_on_unmatched_files: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
