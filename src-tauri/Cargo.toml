@@ -1,0 +1,38 @@
+[package]
+name = "monte-cristo-vault"
+version = "1.0.0"
+description = "The Chronicles of Monte Cristo - A vintage-themed file archive vault application"
+authors = ["Monte Cristo Vault"]
+license = "MIT"
+repository = "https://github.com/anacondy/MOUNTE-CRISTO"
+edition = "2021"
+rust-version = "1.77.2"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+name = "app_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2.5.1" }
+
+[dependencies]
+serde_json = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+log = "0.4"
+tauri = { version = "2.9.2" }
+tauri-plugin-log = "2"
+
+# Release profile optimizations for smaller binary size
+[profile.release]
+# Strip debug symbols
+strip = true
+# Enable Link-Time Optimization for smaller binaries
+lto = true
+# Optimize for size
+opt-level = "s"
+# Reduce code generation units for better optimization
+codegen-units = 1
+# Remove panic unwinding for smaller binary
+panic = "abort"
