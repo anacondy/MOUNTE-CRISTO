@@ -7,7 +7,8 @@
  * Returns false to allow default browser error handling to continue
  */
 window.onerror = function(msg, url, lineNo, columnNo, error) {
-  console.error('Global Error:', msg, 'at', lineNo + ':' + columnNo, error);
+  const location = `${lineNo ?? '?'}:${columnNo ?? '?'}`;
+  console.error('Global Error:', msg, 'at', location, error);
   return false;
 };
 
