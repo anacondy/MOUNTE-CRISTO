@@ -31,10 +31,12 @@
         position: fixed;
         inset: 0;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
         background-color: #1a120b;
         z-index: 9999;
+        transition: opacity 0.3s ease-out;
       }
       
       #app-loader::after {
@@ -50,11 +52,106 @@
       @keyframes spin {
         to { transform: rotate(360deg); }
       }
+      
+      /* Error state for loader */
+      #app-loader.error {
+        background-color: #1a120b;
+      }
+      
+      #app-loader.error::after {
+        display: none;
+      }
+      
+      #load-error {
+        display: none;
+        text-align: center;
+        font-family: serif;
+        padding: 20px;
+      }
+      
+      #app-loader.error #load-error {
+        display: block;
+      }
+      
+      #load-error h1 {
+        color: #d44d38;
+        margin-bottom: 16px;
+        font-size: 24px;
+      }
+      
+      #load-error p {
+        color: #eaddcf;
+        margin-bottom: 8px;
+      }
+      
+      #load-error button {
+        margin-top: 16px;
+        padding: 12px 24px;
+        background: #d44d38;
+        color: #1a120b;
+        border: none;
+        cursor: pointer;
+        font-family: serif;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+      
+      #load-error button:hover {
+        background: #b03a28;
+      }
+      
+      /* Noscript styling */
+      .noscript-message {
+        color: #eaddcf;
+        background: #1a120b;
+        padding: 40px;
+        text-align: center;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-family: serif;
+      }
+      
+      .noscript-message h1 {
+        color: #d44d38;
+        margin-bottom: 20px;
+      }
     </style>
   </head>
   <body>
-    <div id="app-loader"></div>
+    <div id="app-loader">
+      <div id="load-error">
+        <h1>Loading Error</h1>
+        <p>The application failed to load properly.</p>
+        <p style="font-size: 12px; color: #8c7b70;">This may be due to network issues or JavaScript being disabled.</p>
+        <button onclick="window.location.reload()">Retry</button>
+      </div>
+    </div>
     <div id="root"></div>
+    <noscript>
+      <div class="noscript-message">
+        <h1>JavaScript Required</h1>
+        <p>This application requires JavaScript to run.</p>
+        <p>Please enable JavaScript in your browser settings and reload the page.</p>
+      </div>
+    </noscript>
+    <script>
+      // Fallback timeout: Show error after this duration if React hasn't loaded
+      // This prevents indefinite loading if JS fails to execute
+      var FALLBACK_TIMEOUT_MS = 10000;
+      
+      window.__loaderTimeout = setTimeout(function() {
+        var loader = document.getElementById('app-loader');
+        if (loader && !window.__appMounted) {
+          loader.classList.add('error');
+        }
+      }, FALLBACK_TIMEOUT_MS);
+      
+      // Global flag that React sets when mounted
+      window.__appMounted = false;
+    </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

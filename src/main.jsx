@@ -3,8 +3,19 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
 
+// Clear the fallback timeout and mark app as mounted
+const clearFallbackTimeout = () => {
+  if (window.__loaderTimeout) {
+    clearTimeout(window.__loaderTimeout)
+    window.__loaderTimeout = null
+  }
+  window.__appMounted = true
+}
+
 // Remove loading indicator with smooth fade out
 const removeLoader = () => {
+  clearFallbackTimeout()
+  
   const loader = document.getElementById('app-loader')
   if (loader) {
     loader.style.opacity = '0'
@@ -32,6 +43,8 @@ const AppWithLoader = () => {
 const rootElement = document.getElementById('root')
 
 if (!rootElement) {
+  clearFallbackTimeout()
+  
   // Remove loader and show error if root element is missing
   const loader = document.getElementById('app-loader')
   if (loader) loader.remove()
@@ -50,6 +63,8 @@ if (!rootElement) {
       </React.StrictMode>,
     )
   } catch (error) {
+    clearFallbackTimeout()
+    
     // Handle render errors
     const loader = document.getElementById('app-loader')
     if (loader) loader.remove()
