@@ -1,3 +1,14 @@
+// Global error handler for catching unhandled errors
+window.onerror = function(msg, url, lineNo, columnNo, error) {
+  console.error('Global Error:', msg, 'at', lineNo + ':' + columnNo, error);
+  return false;
+};
+
+// Handle unhandled promise rejections
+window.onunhandledrejection = function(event) {
+  console.error('Unhandled Promise Rejection:', event.reason);
+};
+
 import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
