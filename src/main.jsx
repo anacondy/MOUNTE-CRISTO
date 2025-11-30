@@ -1,3 +1,28 @@
+/**
+ * Global Error Handler
+ * Catches synchronous JavaScript errors including:
+ * - Syntax errors, Reference errors, Type errors
+ * - Errors during React component rendering
+ * - Errors from third-party libraries (lucide-react, etc.)
+ * Returns false to allow default browser error handling to continue
+ */
+window.onerror = function(msg, url, lineNo, columnNo, error) {
+  const location = `${lineNo ?? '?'}:${columnNo ?? '?'}`;
+  console.error('Global Error:', msg, 'at', location, error);
+  return false;
+};
+
+/**
+ * Unhandled Promise Rejection Handler
+ * Catches asynchronous errors including:
+ * - Failed fetch requests
+ * - Rejected promises without .catch()
+ * - Async/await errors not wrapped in try-catch
+ */
+window.onunhandledrejection = function(event) {
+  console.error('Unhandled Promise Rejection:', event.reason);
+};
+
 import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
