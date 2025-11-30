@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/MOUNTE-CRISTO/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content="The Chronicles of Monte Cristo - A vintage-themed file archive vault application for organizing and previewing your files with style" />
+    <meta name="theme-color" content="#1a120b" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    
+    <!-- Preload critical fonts for better performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+    
+    <title>MONTE CRISTO | The Archives</title>
+    
+    <style>
+      /* Critical CSS for initial render */
+      html, body {
+        margin: 0;
+        padding: 0;
+        background-color: #1a120b;
+        color: #eaddcf;
+        overflow-x: hidden;
+      }
+      
+      /* Loading spinner */
+      #app-loader {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #1a120b;
+        z-index: 9999;
+      }
+      
+      #app-loader::after {
+        content: '';
+        width: 48px;
+        height: 48px;
+        border: 3px solid #3e3228;
+        border-top-color: #d44d38;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
+    <script type="module" crossorigin src="/MOUNTE-CRISTO/assets/index-Dj6df2g5.js"></script>
+    <link rel="modulepreload" crossorigin href="/MOUNTE-CRISTO/assets/vendor-pi1liG_F.js">
+    <link rel="modulepreload" crossorigin href="/MOUNTE-CRISTO/assets/icons-BJEyBiNg.js">
+    <link rel="stylesheet" crossorigin href="/MOUNTE-CRISTO/assets/index-BSKk-2cN.css">
+  </head>
+  <body>
+    <div id="app-loader"></div>
+    <div id="root"></div>
+  </body>
+</html>
