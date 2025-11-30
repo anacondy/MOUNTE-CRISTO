@@ -119,7 +119,7 @@
         margin-bottom: 20px;
       }
     </style>
-    <script type="module" crossorigin src="/MOUNTE-CRISTO/assets/index-Cz49Wygq.js"></script>
+    <script type="module" crossorigin src="/MOUNTE-CRISTO/assets/index-CVi9oIqd.js"></script>
     <link rel="modulepreload" crossorigin href="/MOUNTE-CRISTO/assets/vendor-pi1liG_F.js">
     <link rel="modulepreload" crossorigin href="/MOUNTE-CRISTO/assets/icons-BJEyBiNg.js">
     <link rel="stylesheet" crossorigin href="/MOUNTE-CRISTO/assets/index-BSKk-2cN.css">
@@ -142,14 +142,16 @@
       </div>
     </noscript>
     <script>
-      // Fallback timeout: Remove loader after 10 seconds if React hasn't loaded
+      // Fallback timeout: Show error after this duration if React hasn't loaded
       // This prevents indefinite loading if JS fails to execute
+      var FALLBACK_TIMEOUT_MS = 10000;
+      
       window.__loaderTimeout = setTimeout(function() {
         var loader = document.getElementById('app-loader');
         if (loader && !window.__appMounted) {
           loader.classList.add('error');
         }
-      }, 10000);
+      }, FALLBACK_TIMEOUT_MS);
       
       // Global flag that React sets when mounted
       window.__appMounted = false;
