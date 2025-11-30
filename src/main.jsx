@@ -13,11 +13,17 @@ const removeLoader = () => {
   }
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
+// Safely create root with error handling
+const root = document.getElementById('root')
+if (!root) {
+  document.body.innerHTML = '<div style="color: white; padding: 20px;">Error: Root element not found</div>'
+} else {
+  ReactDOM.createRoot(root).render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>,
+  )
 
-// Remove loader after initial render
-requestAnimationFrame(removeLoader)
+  // Remove loader after initial render
+  requestAnimationFrame(removeLoader)  
+}
