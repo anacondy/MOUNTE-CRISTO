@@ -22,7 +22,8 @@ export default defineConfig({
       compress: {
         drop_console: false,
         drop_debugger: true,
-        passes: 2
+        passes: 2,
+        pure_funcs: ['console.log']
       },
       mangle: {
         safari10: true
@@ -35,19 +36,48 @@ export default defineConfig({
     target: 'esnext',
     // Inline assets smaller than 10KB
     assetsInlineLimit: 10240,
+    // Optimize chunk sizes for better caching
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
           icons: ['lucide-react']
-        }
+        },
+        // Optimize asset file names for better caching
+        assetFileNames: (assetInfo) => {
+          const info = assetInfo.name.split('.')
+          const ext = info[info.length - 1]
+          if (/png|jpe?g|svg|gif|tiff|bmp|ico|webp/i.test(ext)) {
+            return `assets/images/[name]-[hash][extname]`
+          }
+          if (/woff2?|ttf|otf|eot/i.test(ext)) {
+            return `assets/fonts/[name]-[hash][extname]`
+          }
+          return `assets/[name]-[hash][extname]`
+        },
+        chunkFileNames: 'assets/js/[name]-[hash].js',
+        entryFileNames: 'assets/js/[name]-[hash].js'
       }
-    }
+    },
+    // Enable CSS code splitting
+    cssCodeSplit: true,
+    // Report compressed size for optimization insights
+    reportCompressedSize: true
   },
   server: {
     port: 3000,
-    open: true
+    open: true,
+    // Enable hot module replacement for faster development
+    hmr: {
+      overlay: true
+    }
   },
   // Prevent unnecessary file watching in production builds
-  clearScreen: false
+  clearScreen: false,
+  // Optimize dependencies
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'lucide-react'],
+    exclude: []
+  }
 })
