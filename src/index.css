@@ -16,6 +16,10 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* High refresh rate support */
+  -webkit-overflow-scrolling: touch;
+  /* Optimize for 60fps, 90fps, 120fps, 144fps displays */
+  will-change: scroll-position;
 }
 
 body {
@@ -25,6 +29,13 @@ body {
   min-height: 100vh;
   min-height: 100dvh; /* Dynamic viewport height for mobile */
   overflow-x: hidden;
+  /* Hardware acceleration for smooth scrolling */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  /* Optimize rendering for high refresh rates */
+  contain: layout style paint;
 }
 
 /* Custom scrollbar for WebKit browsers */
@@ -60,11 +71,44 @@ body {
     transform: translateZ(0);
     will-change: transform;
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
   }
   
   .smooth-scroll {
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
+    /* High refresh rate optimization */
+    scroll-snap-type: y proximity;
+  }
+  
+  /* High performance scrolling container */
+  .high-refresh-scroll {
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    /* Hardware acceleration */
+    transform: translateZ(0);
+    will-change: scroll-position;
+    /* Optimize for 144Hz displays */
+    contain: strict;
+  }
+  
+  /* Optimized animations for 60/90/120/144 FPS */
+  .fps-optimized {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+  
+  /* Low-end device optimization (guaranteed 60fps) */
+  @media (prefers-reduced-motion: no-preference) {
+    .animate-efficient {
+      animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      animation-fill-mode: both;
+    }
   }
 }
 
@@ -102,30 +146,8 @@ body {
 
 /* Responsive optimizations for different aspect ratios */
 
-/* 16:9 aspect ratio devices (standard monitors, tablets landscape) */
-@media (min-aspect-ratio: 16/9) {
-  .sidebar-responsive {
-    width: 280px;
-  }
-  
-  .grid-responsive {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-  }
-}
-
-/* 20:9 and wider aspect ratios (modern smartphones landscape) */
-@media (min-aspect-ratio: 20/9) {
-  .sidebar-responsive {
-    width: 200px;
-  }
-  
-  .grid-responsive {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
-}
-
-/* Mobile optimizations */
-@media (max-width: 640px) {
+/* Mobile portrait optimizations - 16:9 aspect ratio */
+@media (max-width: 640px) and (orientation: portrait) {
   .sidebar-responsive {
     width: 100%;
     position: fixed;
@@ -137,11 +159,67 @@ body {
     z-index: 40;
     border-radius: 16px 16px 0 0;
     overflow-y: auto;
+    /* Smooth scrolling for mobile */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
   }
   
   .grid-responsive {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
+  }
+  
+  /* Optimize touch targets for mobile */
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Mobile landscape optimizations - 20:9 aspect ratio */
+@media (max-width: 960px) and (orientation: landscape) {
+  .sidebar-responsive {
+    width: 180px;
+    max-height: 100vh;
+  }
+  
+  .grid-responsive {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+  }
+}
+
+/* 16:9 aspect ratio devices (standard monitors, tablets landscape) */
+@media (min-aspect-ratio: 16/9) and (min-width: 1024px) {
+  .sidebar-responsive {
+    width: 280px;
+  }
+  
+  .grid-responsive {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+/* 20:9 and wider aspect ratios (modern smartphones landscape, ultrawide monitors) */
+@media (min-aspect-ratio: 20/9) and (min-width: 1024px) {
+  .sidebar-responsive {
+    width: 200px;
+  }
+  
+  .grid-responsive {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+/* Tablet optimizations */
+@media (min-width: 640px) and (max-width: 1024px) {
+  .sidebar-responsive {
+    width: 240px;
+  }
+  
+  .grid-responsive {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
   }
 }
 
@@ -164,6 +242,7 @@ body {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
@@ -172,5 +251,81 @@ body {
   :root {
     --color-accent: #ff5544;
     --color-border: #665544;
+  }
+}
+
+/* Low-end device optimizations */
+@media (max-width: 640px) and (max-height: 800px) {
+  /* Reduce animation complexity on small screens */
+  .complex-animation {
+    animation: none !important;
+  }
+  
+  /* Optimize fonts for mobile */
+  body {
+    text-rendering: optimizeSpeed;
+  }
+  
+  /* Reduce visual effects on low-end devices */
+  .grain-overlay {
+    opacity: 0.01 !important;
+  }
+}
+
+/* Image optimization utilities */
+.lazy-load-img {
+  content-visibility: auto;
+  contain-intrinsic-size: 300px;
+}
+
+/* Optimize for 144Hz displays */
+@media (prefers-reduced-motion: no-preference) {
+  .high-fps-animation {
+    animation-timing-function: linear;
+    will-change: transform;
+  }
+}
+
+/* Container queries for responsive components */
+@supports (container-type: inline-size) {
+  .container-responsive {
+    container-type: inline-size;
+  }
+}
+
+/* Optimize text rendering */
+.optimize-text {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Efficient grid layouts */
+.grid-efficient {
+  display: grid;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
+
+/* Passive event listeners hint */
+.touch-optimized {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Optimize for both 16:9 and 20:9 mobile devices */
+@media (max-width: 640px) {
+  /* 16:9 mobile portrait (e.g., older phones) */
+  @supports (aspect-ratio: 16/9) {
+    .mobile-content {
+      padding: clamp(12px, 2vw, 20px);
+    }
+  }
+  
+  /* 20:9 mobile portrait (e.g., modern phones) */
+  @supports (aspect-ratio: 20/9) {
+    .mobile-content {
+      padding: clamp(10px, 1.5vw, 16px);
+    }
   }
 }
