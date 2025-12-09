@@ -147,7 +147,7 @@ MOUNTE-CRISTO/
 - **Smooth Scrolling**: Touch-optimized scrolling with `-webkit-overflow-scrolling: touch`
 
 ### Mobile Optimization
-- **60 FPS Minimum**: Guaranteed smooth performance even on low-end devices
+- **60 FPS Target**: Optimized for smooth performance even on low-end devices
 - **Touch-Optimized**: Minimum 44px touch targets for better mobile usability
 - **Responsive Images**: Content-visibility and lazy loading for faster initial load
 - **Reduced Motion Support**: Respects user preferences for reduced animations
@@ -188,11 +188,11 @@ The application is fully optimized for all modern devices and screen configurati
 - **Safe Areas**: Respects device notches and rounded corners
 - **Touch Gestures**: Swipe, drag & drop, pinch-to-zoom where applicable
 
-### Performance Guarantees
-- **Desktop**: 144fps on high-refresh displays, 60fps minimum
-- **Tablets**: 90fps on modern tablets, 60fps minimum
-- **Mobile**: 60fps guaranteed even on budget devices
-- **No Lag**: Optimized scrolling with zero jank or stutter
+### Performance Targets
+- **Desktop**: Optimized for 144fps on high-refresh displays, 60fps minimum target
+- **Tablets**: Targets 90fps on modern tablets, 60fps minimum
+- **Mobile**: Targets smooth 60fps even on budget devices
+- **Smooth Scrolling**: Optimized for minimal jank and butter-smooth performance
 
 ---
 
